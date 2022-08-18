@@ -1,0 +1,37 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// body {
+//     color: #ddd;
+// }
+
+.form-control {
+    color: #ddd !important;
+}
+
+.formTextarea {
+    height: 250px;
+    width: 500px;
+    word-break: break-all;
+}
+
+.navLink {
+    font-size: 17px;
+    color: var(--bs-card-color);
+    text-decoration: none;
+}
+
+.messageContainer {
+    margin-top: 24px;
+}
+
+.listButtons {
+    display: flex;
+    
+}
