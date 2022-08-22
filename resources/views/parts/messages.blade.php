@@ -1,4 +1,4 @@
-@if(session('notifications'))
+@if(session('notification'))
 <div class="container messageContainer">
     <div class="row justify-content-center">
         <div class="col-md-10">
@@ -8,7 +8,7 @@
                     <ul>
                         {{-- @forelse($messages as $message) --}}
                         <li>
-                            Message
+                            {{ session('notification') }}
                         </li>
                         {{-- @empty --}}
                         {{-- @endforelse --}}

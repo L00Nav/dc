@@ -19,16 +19,33 @@ class SystemController extends Controller
         // $things = Thing::all()->sortByDesc('name');
         // $things = Thing::where('id', '<', 100)->orderBy('name')->get();
 
-        $systems = match($request->sort) {
-            'name-asc' => System::orderBy('name', 'asc')->get(),
-            'name-desc' => System::orderBy('name', 'desc')->get(),
-            'complexity-asc' => System::orderBy('complexity', 'asc')->get(),
-            'complexity-desc' => System::orderBy('complexity', 'desc')->get(),
-            default => System::all()
-        };
+        $query = System::query();
+
+        $orderBy = $request->sort_by ?? 'name';
+        $orderDir = $request->sort_dir ?? 'asc';
+        $complexity = intval($request->complexity);
+
+        $query->orderBy($orderBy, $orderDir);
+
+        if($complexity > 0)
+        {
+            $query->where('complexity', $complexity);
+        }
+
+        if(!empty($request->search))
+        {
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
 
         //$systems = System::all();
-        return view('system.index', ['systems' => $systems, 'sort' => $request->sort]);
+
+        $systems = $query->get();
+        return view('system.index', [
+            'systems' => $systems,
+            'sort_by' => $orderBy,
+            'sort_dir' => $orderDir,
+            'complexity' => $complexity,
+            ]);
     }
 
     /**

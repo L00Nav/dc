@@ -11,6 +11,11 @@
                     <p>GM: {{$session->getGm->name}}</p>
                     <p>Time: {{$session->time}}</p>
                     <p>Players: {{$session->players}}</p>
+                    <p>Status: 
+                    @if($session->status == -1) Cancelled @endif
+                    @if($session->status == 0) Awaiting confirmation @endif
+                    @if($session->status == 1) Confirmed @endif
+                    <p>
                     <div class="listButtons">
                         <a class="btn btn-outline-primary m-2" href="{{route('sessions-show', $session->id)}}">Show</a>
                         <a class="btn btn-outline-success m-2" href="{{route('sessions-edit', $session)}}">Edit</a>

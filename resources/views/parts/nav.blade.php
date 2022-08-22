@@ -5,6 +5,7 @@
             <a class="navLink" href="{{route('home')}}">Home</a><br>
             <a class="navLink" href="{{route('systems-index')}}">RPG systems</a><br>
             <a class="navLink" href="{{route('sessions-index')}}">My sessions</a><br>
+            <a class="navLink" href="{{route('user-profile')}}">My profile</a><br>
         </nav>
     </div>
 </div>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Session;
 use App\Models\User;
+use App\Models\System;
 // use App\Http\Requests\StoreSystemRequest;
 // use App\Http\Requests\UpdateSystemRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
@@ -38,11 +40,11 @@ class SessionController extends Controller
         //     };
         // }
         $sessions = Session::all();
-        $users = User::all();
+        $systems = System::all();
 
         return view('session.index', [
             'sessions' => $sessions,
-            'users' => $users,
+            'systems' => $systems,
             'sort' => $request->sort
         ]);
     }
@@ -54,7 +56,13 @@ class SessionController extends Controller
      */
     public function create()
     {
-        //
+        $sessions = Session::all();
+        $systems = System::all();
+
+        return view('session.create', [
+            'sessions' => $sessions,
+            'systems' => $systems
+        ]);
     }
 
     /**
@@ -63,9 +71,17 @@ class SessionController extends Controller
      * @param  \App\Http\Requests\StoreSessionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSessionRequest $request)
+    public function store(Request $request)
     {
-        //
+        $session = new Session;
+
+        $session->system_id = $request->system_id;
+        $session->user_id = Auth::id();
+        $session->time = $request->session_time;
+        $session->players = $request->session_players;
+
+        $session->save();
+        return redirect()->route('sessions-index')->with('notification', 'Session created');
     }
 
     /**
@@ -74,9 +90,11 @@ class SessionController extends Controller
      * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function show(Session $session)
+    public function show(int $sessionId)
     {
-        //
+        $session = Session::where('id', $sessionId)->first();
+
+        return view('session.show', ['session' => $session]);
     }
 
     /**
@@ -87,7 +105,12 @@ class SessionController extends Controller
      */
     public function edit(Session $session)
     {
-        //
+        $systems = System::all();
+
+        return view('session.edit', [
+            'session' => $session,
+            'systems' => $systems
+        ]);
     }
 
     /**
@@ -97,9 +120,16 @@ class SessionController extends Controller
      * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSessionRequest $request, Session $session)
+    public function update(Request $request, Session $session)
     {
-        //
+        $session->system_id = $request->system_id;
+        $session->user_id = Auth::id();
+        $session->time = $request->session_time;
+        $session->players = $request->session_players;
+        $session->status = $request->session_status;
+
+        $session->save();
+        return redirect()->route('sessions-index')->with('notification', 'Session created');
     }
 
     /**
@@ -110,6 +140,7 @@ class SessionController extends Controller
      */
     public function destroy(Session $session)
     {
-        //
+        $session->delete();
+        return redirect()->route('sessions-index')->with('notification', 'Session deleted');
     }
 }

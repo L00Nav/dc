@@ -20,4 +20,9 @@ class Session extends Model
     {
         return $this->belongsTo(System::class, 'system_id', 'id');
     }
+
+    public function getPlayers()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
